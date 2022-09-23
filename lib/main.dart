@@ -34,133 +34,132 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  String previous = '';
-  String value = '';
+  String input = '';
+  String output = '';
 
   void click(String text) {
-    setState(() => {value += text});
+    setState(() => {output += text});
   }
 
-  void allclear(String text) {
+  void allClear(String text) {
     setState(() {
-      previous = '';
-      value = '';
+      input = '';
+      output = '';
     });
   }
 
   void clear(String text) {
     setState(() {
-      value = '';
+      output = output.substring(0,output.length-1);
+      // output = '';
     });
   }
 
   void evaluate(String text) {
     Parser p = Parser();
-    Expression exp = p.parse(value);
+    Expression exp = p.parse(output);
     ContextModel cm = ContextModel();
 
     setState(() {
-      previous = value;
-      value = exp.evaluate(EvaluationType.REAL, cm).toString();
+      input = output;
+      output = exp.evaluate(EvaluationType.REAL, cm).toString();
     });
   }
 
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-          Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Container(
-              child: Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: Text(previous,
-                  style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.black54
+    return SafeArea(
+      child: Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 20),
+                  child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(input.toString(),
+                      style: const TextStyle(
+                          fontSize: 24,
+                          color: Colors.black54
+                      ),
+                    ),
+                    Text(output.toString(),
+                      style: const TextStyle(
+                        fontSize: 40,
+                      ),
+                    ),
+                  ],
                     ),
                 ),
               ),
-              alignment: Alignment(1.0, 1.0),
-            ),
-            Container(
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Text(value,
-                      style: TextStyle(
-                      fontSize: 48,
+
+                const Divider(thickness: 1,),
+
+                Expanded(
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        MyButton(textColor: Colors.indigo, text: 'AC',textSize: 24, onPress: allClear),
+                        MyButton(textColor: Colors.indigo, text: 'C',textSize: 24, onPress: clear,),
+                        MyButton(textColor: Colors.indigo, text: '%', onPress: click),
+                        MyButton(textColor: Colors.indigo, text: '/', onPress: click)
+                      ],
                     ),
 
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        MyButton(text: '7', onPress: click),
+                        MyButton(text: '8', onPress: click),
+                        MyButton(text: '9', onPress: click),
+                        MyButton(textColor: Colors.indigo, text: '*',textSize: 40, onPress: click)
+                      ],
+                    ),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        MyButton(text: '4', onPress: click),
+                        MyButton(text: '5', onPress: click),
+                        MyButton(text: '6', onPress: click),
+                        MyButton(textColor: Colors.indigo, text: '-',textSize: 40, onPress: click)
+                      ],
+                    ),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        MyButton(text: '1', onPress: click),
+                        MyButton(text: '2', onPress: click),
+                        MyButton(text: '3', onPress: click),
+                        MyButton(textColor: Colors.indigo, text: '+',textSize: 30, onPress: click)
+                      ],
+                    ),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        MyButton(text: '.', onPress: click),
+                        MyButton(text: '0', onPress: click),
+                        MyButton(text: '00', onPress: click),
+                        MyButton(textColor: Colors.white, text: '=', btnColor: Colors.indigo, onPress: evaluate)
+                      ],
+                    ),
+                  ],
                 ),
-              ),
-              alignment: Alignment(1.0, 1.0),
+              )
+        ]
             ),
-            SizedBox(height: 20),
-            Divider(thickness: 1,),
+          ),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                  button(textcolor: Colors.indigo, text: 'AC',textsize: 24, onPress: allclear),
-                  button(textcolor: Colors.indigo, text: 'C',textsize: 24, onPress: clear),
-                  button(textcolor: Colors.indigo, text: '%', onPress: click),
-                  button(textcolor: Colors.indigo, text: '/', onPress: click)
-              ],
-            ),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                button(text: '7', onPress: click),
-                button(text: '8', onPress: click),
-                button(text: '9', onPress: click),
-                button(textcolor: Colors.indigo, text: '*',textsize: 40, onPress: click)
-              ],
-            ),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                button(text: '4', onPress: click),
-                button(text: '5', onPress: click),
-                button(text: '6', onPress: click),
-                button(textcolor: Colors.indigo, text: '-',textsize: 40, onPress: click)
-              ],
-            ),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                button(text: '1', onPress: click),
-                button(text: '2', onPress: click),
-                button(text: '3', onPress: click),
-                button(textcolor: Colors.indigo, text: '+',textsize: 30, onPress: click)
-              ],
-            ),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                button(text: '.', onPress: click),
-                button(text: '0', onPress: click),
-                button(text: '00', onPress: click),
-                button(textcolor: Colors.white, text: '=', btncolor: Colors.indigo, onPress: evaluate)
-              ],
-            ),
-          ],
-
-
-
-
-        ),
-      ]
-        ),
       ),
     );
   }
